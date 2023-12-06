@@ -28,6 +28,20 @@ const url = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?ret
 
 }*/
 
+http.createServer(function(req, res){
+    if ( req.url == "/part2.js") {
+        res.write ("Successful");
+    } else {
+        res.write ("Not Successful");
+    }
+    /*res.writeHead(200, {'Content-Type': 'text/html'});
+    var qobj = url.parse(req.url, true).query;
+    var txt = qobj.x;
+    res.end(txt);*/
+})
+    
+//.listen(8080);
+
 var body = '';
 req.on('data', chunk => { body += chunk.toString(); });
 req.on('end', () =>
