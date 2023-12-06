@@ -30,9 +30,9 @@ const url = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?ret
 
 http.createServer(function(req, res){
     if ( req.url == "/part2.js") {
-        res.write ("Successful");
+        console.log ("Successful");
     } else {
-        res.write ("Not Successful");
+        console.log ("Not Successful");
     }
     /*res.writeHead(200, {'Content-Type': 'text/html'});
     var qobj = url.parse(req.url, true).query;
