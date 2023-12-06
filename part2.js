@@ -41,7 +41,7 @@ const url = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?ret
 });*/
 
 
-http.createServer(function(req, res){
+/*http.createServer(function(req, res){
     var path = url.parse(req.url,true).pathname;
     if ( path == "/part2.js") {
         console.log ("Successful");
@@ -49,17 +49,42 @@ http.createServer(function(req, res){
         console.log ("Not Successful");
     }
     res.end();
-});
-    
-//.listen(8080);
+});*/
 
-var body = '';
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    urlObj = url.parse(req.url,true)
+    path = urlObj.pathname;
+    if (path == "/")
+    {
+      file="form.html";
+      fs.readFile(file, function(err, home) {
+      res.write(home);
+      res.end();
+      })
+    }
+    else if (path == "/process")
+    {
+      res.write ("Processing<br/>");
+      var body = '';
+      req.on('data', chunk => { body += chunk.toString();  });
+      req.on('end', () => 
+          { 
+          res.write ("Raw data string: " + body +"<br/>");
+          var id = qs.parse(body).id;      // assumes x is post data parameter	
+          res.write ("The id is " + id );
+          res.end();
+          });
+    }
+}).listen(8080);
+    
+/*var body = '';
 req.on('data', chunk => { body += chunk.toString(); });
 req.on('end', () =>
 {
 console.log(qs.parse(body).x ); // assume x is post data parameter
 res.end();
-});
+});*/
 
 function runQuery(collection, data) {
     theQuery = {author:"Bob Smith"};
