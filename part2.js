@@ -28,7 +28,7 @@ const url = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?ret
 
 }*/
 
-http.createServer(function(req, res){
+/*http.createServer(function(req, res){
     res.writeHead(200, {'Content-Type': 'text/html'});
     var qobj = url.parse(req.url, true).query;
     if ( req.url == "/part2.js") {
@@ -38,7 +38,18 @@ http.createServer(function(req, res){
     }
     var txt = qobj.x;
     res.end(txt);
-})
+});*/
+
+
+http.createServer(function(req, res){
+    var path = url.parse(req.url,true).pathname;
+    if ( path == "/part2.js") {
+        console.log ("Successful");
+    } else {
+        console.log ("Not Successful");
+    }
+    res.end();
+});
     
 //.listen(8080);
 
