@@ -10,9 +10,13 @@ const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net
 function findResults (queryArray) {
 
     client = new MongoClient(url);
+    console.log('get to here');
+
     async function doit() {
     try {
         await client.connect();
+        console.log('get to here');
+
         var dbo = client.db("HW14");
         var coll = dbo.collection('Companies');
         const options = {
@@ -31,7 +35,6 @@ function findResults (queryArray) {
         }
         console.log(curs);*/
 
-        console.log('get to here');
     } 
     catch(err) {
         console.log("Database error: " + err);
