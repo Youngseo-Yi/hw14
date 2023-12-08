@@ -24,14 +24,12 @@ function find (queryArray) {
         else {
 
             const options = {
-                sort: { author: 1 },
-                limit: 2,
                 projection: { _id: 0,
                 Company: 1,
                 Ticker: 1,
                 Price: 1},
                 };
-            result = coll.find({},options);
+            console.log(coll.find({},options));
             if (result.count() === 0) {
                  console.log("Nothing found!"); 
             }
