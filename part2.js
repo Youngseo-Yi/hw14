@@ -8,39 +8,40 @@ const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net
 
 
 function findResults (queryArray) {
-    MongoClient.connect(url, function(err, db) {
-        if(err) { return console.log(err); }
 
-        var dbo = db.db("HW14");
+    client = new MongoClient(url);
+    async function doit() {
+    try {
+        await client.connect();
+        var dbo = client.db("HW14");
         var coll = dbo.collection('Companies');
-        if (queryArray['queryChoice'] == "coName"){
-            theQuery = {Company:queryArray['textInput']};
-        } else { //queryChoice is symbol
-            theQuery = {Ticker:queryArray['textInput']};
-        }
-        coll.find(theQuery).toArray(function(err, items) {
+        const options = {
+        projection: { _id: 0, Company: 1, Ticker: 1, Price:1},
+        };
 
-        if (err) {console.log("Error: " + err);}
-        else {
-            for (i=0; i<items.length; i++) {
-                console.log("Company: " + items[i].Company + " Ticker: " + items[i].Ticker + " Price: " + items[i].Price);
-            }
-            /*const options = {
-                projection: { _id: 0,
-                Company: 1,
-                Ticker: 1,
-                Price: 1},
-                };
-            console.log(coll.find(theQuery),options);*/
-            if (items.length() === 0) {
-                 console.log("Nothing found!"); 
-            }
+        if (queryArray['queryChoice'] =='coName') {
+            myQuery = {Company: queryArray['textInput']};
+        } else {
+            myQuery = {Ticker: queryArray['textInput']};
         }
-        db.close();
-    
-        });
+        const curs = coll.find(myQuery,options);
+        // print a message if no documents were found
+        if ((await curs.count()) === 0) {
+        console.log("No documents found!");
+        }
         
-    });
+        await curs.forEach(function(item){
+            console.log(item.Company);
+        });
+    } 
+    catch(err) {
+        console.log("Database error: " + err);
+    }
+    finally {
+        client.close();
+    }
+    }  //end doit
+    doit();//.catch(console.dir);      
 
 }
 
@@ -64,61 +65,7 @@ http.createServer(function (req, res) {
           res.write ("Raw data string: " + body +"<br/>");
           var queryArray= qs.parse(body);
           console.log(queryArray['queryChoice']);
-          /*if (queryArray['queryChoice'] == 'symbol') {
-            find()
-          } else if (queryArray['queryChoice'] == 'coName') {
-            console.log("coName!!");
-          } else {
-            console.log("unidentified queryChoice");
-          }*/
-          //var radioChoice = body.split('=');
-          //var id = queryArray['textInput'];
-
           findResults(queryArray);
           });
     }
 }).listen(8080);
-    
-/*var body = '';
-req.on('data', chunk => { body += chunk.toString(); });
-req.on('end', () =>
-{
-console.log(qs.parse(body).x ); // assume x is post data parameter
-res.end();
-});*/
-
-/*
-function runQuery(collection, data) {
-    theQuery = {author:"Bob Smith"};
-    coll.find(theQuery).toArray(function(err, items) {
-    if (err) {
-    console.log("Error: " + err);
-    }
-    else
-    {
-    console.log("Items: ");
-    for (i=0; i<items.length; i++)
-    console.log(i + ": " + items[i].title + " by: " + items[i].author);
-    }
-    db.close();
-
-    });
-}
-*/
-/*MongoClient.connect(url, function(err, db) {
-    if(err) { return console.log(err); }
-
-    var dbo = db.db("HW14");
-    var collection = dbo.collection('Companies');
-
-    //runQuery(collection, data);
-
-     PSEUDOCODE
-    if queryChoice.value = 'symbol' {
-        db.--.find(symbol = queryChoice.value)    should display all results
-    }
-    if queryChoice.value = 'coName' {
-        db.--.find(company = queryChoice.value)   should display all results
-    }
-    
-});*/
