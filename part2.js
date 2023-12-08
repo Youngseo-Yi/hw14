@@ -7,7 +7,7 @@ const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net
 
 
 
-function find (queryArray) {
+function findResults (queryArray) {
     MongoClient.connect(url, function(err, db) {
         if(err) { return console.log(err); }
 
@@ -22,15 +22,17 @@ function find (queryArray) {
 
         if (err) {console.log("Error: " + err);}
         else {
-
-            const options = {
+            for (i=0; i<items.length; i++) {
+                console.log("Company: " + items[i].Company + " Ticker: " + items[i].Ticker + " Price: " + items[i].Price);
+            }
+            /*const options = {
                 projection: { _id: 0,
                 Company: 1,
                 Ticker: 1,
                 Price: 1},
                 };
-            console.log(coll.find({},options));
-            if (result.count() === 0) {
+            console.log(coll.find(theQuery),options);*/
+            if (items.length() === 0) {
                  console.log("Nothing found!"); 
             }
         }
@@ -72,7 +74,7 @@ http.createServer(function (req, res) {
           //var radioChoice = body.split('=');
           //var id = queryArray['textInput'];
 
-          find(queryArray);
+          findResults(queryArray);
           });
     }
 }).listen(8080);
@@ -85,6 +87,7 @@ console.log(qs.parse(body).x ); // assume x is post data parameter
 res.end();
 });*/
 
+/*
 function runQuery(collection, data) {
     theQuery = {author:"Bob Smith"};
     coll.find(theQuery).toArray(function(err, items) {
@@ -101,7 +104,7 @@ function runQuery(collection, data) {
 
     });
 }
-
+*/
 /*MongoClient.connect(url, function(err, db) {
     if(err) { return console.log(err); }
 
