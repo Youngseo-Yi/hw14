@@ -7,7 +7,7 @@ const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net
 
 
 
-function find (queryArray) {
+/*unction find (queryArray) {
     MongoClient.connect(url, function(err, db) {
         if(err) { return console.log(err); }
 
@@ -26,7 +26,7 @@ function find (queryArray) {
         
     });
 
-}
+}*/
 
 
 http.createServer(function (req, res) {
