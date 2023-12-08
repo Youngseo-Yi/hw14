@@ -19,7 +19,7 @@ function findResults (queryArray) {
         projection: { _id: 0, Company: 1, Ticker: 1, Price:1},
         };
 
-        if (queryArray['queryChoice'] =='coName') {
+        /*if (queryArray['queryChoice'] =='coName') {
             myQuery = {Company: queryArray['textInput']};
         } else {
             myQuery = {Ticker: queryArray['textInput']};
@@ -29,7 +29,9 @@ function findResults (queryArray) {
         if ((await curs.count()) === 0) {
         console.log("No documents found!");
         }
-        console.log(curs);
+        console.log(curs);*/
+
+        console.log('get to here');
     } 
     catch(err) {
         console.log("Database error: " + err);
