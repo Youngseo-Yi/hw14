@@ -5,30 +5,20 @@ var http = require('http');
 const MongoClient = require('mongodb').MongoClient;
 const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?retryWrites=true&w=majority";
 var port =process.env.PORT || 3000
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
 //var port=8080; uncomment to run local
 
-http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('<link rel="stylsheet" type="text/css" href="formStylesheet.css">');
+app.set('view engine','pug');
+app.set('views','./views');
+app.use(bodyParser.urlencoded({extended:true}));
 
-    urlObj = url.parse(req.url,true)
-    path = urlObj.pathname;
-    if (path == "/") {
-      file="form.html";
-      fs.readFile(file, function(err, home) {
-      res.write(home);
-      res.end();
+app.get('/',function(req,res) {
+    const queryChoice= req.query.queryChoice;
+    const textInput = req.query.textInput;
 
-      })
-    }
-    else if (path == "/process") { //check if form has been submitted
-        var body = '';
-        req.on('data', chunk => { body += chunk.toString();  });
-        req.on('end', () => { 
-            var queryArray= qs.parse(body); //get the form data
-
-            //Connect to MongoDB and find the query
-            client = new MongoClient(MongoUrl);
+    client = new MongoClient(MongoUrl);
 
             async function doit() {
             try {
@@ -41,10 +31,10 @@ http.createServer(function (req, res) {
                 };
 
                 //check if they are searching company name or ticker
-                if (queryArray['queryChoice'] =='coName') {
-                    myQuery = { Company: { $regex: queryArray['textInput']} }
+                if (queryChoice =='coName') {
+                    myQuery = { Company: { $regex: textInput} }
                 } else {
-                    myQuery = { Ticker: { $regex: queryArray['textInput']} }
+                    myQuery = { Ticker: { $regex: textInput} }
                 }
                 const curs = coll.find(myQuery,options);
                 // print a message if no documents were found
@@ -53,10 +43,11 @@ http.createServer(function (req, res) {
                 }
                 //write in page for the results
                 await curs.forEach(function(item){
-                    res.write("<div class='myCo'>");
-                    res.write("<div class='Company'>"+ item.Company+"</div>");
-                    res.write("<div class = 'Ticker'>"+item.Ticker+"</div>");
-                    res.write("<div class='Price'>" +item.Price + "</div></div>");
+                    res.send("<div class='myCo'>");
+                    res.send("<div class='Company'>"+ item.Company+"</div>");
+                    res.send("<div class = 'Ticker'>"+item.Ticker+"</div>");
+                    res.send("<div class='Price'>" +item.Price + "</div></div>");
+                                
                 });
                 res.end();
 
@@ -69,8 +60,6 @@ http.createServer(function (req, res) {
             }
             }  //end doit
             doit();
-            //.catch(console.dir);   
-        });
-    }
+});
 
-}).listen(port);
+app.listen(port);
