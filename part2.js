@@ -3,7 +3,7 @@ var qs = require('querystring');
 var url = require('url');
 var http = require('http');
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?retryWrites=true&w=majority";
+const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net/?retryWrites=true&w=majority";
 
 
 
@@ -65,15 +65,23 @@ http.createServer(function (req, res) {
     }
     else if (path == "/process")
     {
-      res.write ("Processing<br/>");
       var body = '';
       req.on('data', chunk => { body += chunk.toString();  });
       req.on('end', () => 
           { 
           res.write ("Raw data string: " + body +"<br/>");
-          var id = qs.parse(body).id;      // assumes x is post data parameter	
-          res.write ("The id is " + id );
-          res.end();
+          var queryArray= qs.parse(body);
+          console.log(queryArray['queryChoice']);
+          if (queryArray['queryChoice'] == 'symbol') {
+            console.log("symbol!!");
+          } else if (queryArray['queryChoice'] == 'coName') {
+            console.log("coName!!");
+          } else {
+            console.log("unidentified queryChoice");
+          }
+          //var radioChoice = body.split('=');
+          var id = queryArray['textInput']
+          console.log(id);
           });
     }
 }).listen(8080);
