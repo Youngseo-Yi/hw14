@@ -29,10 +29,7 @@ function findResults (queryArray) {
         if ((await curs.count()) === 0) {
         console.log("No documents found!");
         }
-        
-        await curs.forEach(function(item){
-            console.log(item.Company);
-        });
+        console.log(curs);
     } 
     catch(err) {
         console.log("Database error: " + err);
@@ -60,12 +57,12 @@ http.createServer(function (req, res) {
     else if (path == "/process") {
       var body = '';
       req.on('data', chunk => { body += chunk.toString();  });
-      req.on('end', () => 
-          { 
-          res.write ("Raw data string: " + body +"<br/>");
-          var queryArray= qs.parse(body);
-          console.log(queryArray['queryChoice']);
-          findResults(queryArray);
-          });
+      req.on('end', () => { 
+        res.write ("Raw data string: " + body +"<br/>");
+        var queryArray= qs.parse(body);
+        console.log(queryArray['queryChoice']);
+        console.log(queryArray['textInput']);
+        findResults(queryArray);
+        });
     }
 }).listen(8080);
