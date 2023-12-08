@@ -1,7 +1,7 @@
 {
   "name": "part2",
   "version": "1.0.0",
-  "description": "node app ",
+  "description": "node app for hw14",
   "main": "part2.js",
   "scripts": {
   "start": "part2.js"
