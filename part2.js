@@ -7,49 +7,27 @@ const MongoUrl = "mongodb+srv://pavomare:PavoMare17@cluster0.5phcbau.mongodb.net
 
 
 
-/*function addOne (collection) {
+function find (queryArray) {
+    MongoClient.connect(url, function(err, db) {
+        if(err) { return console.log(err); }
 
-    var myFile = readline.createInterface({
-        input: fs.createReadStream('companies.csv')
-    });
+        var dbo = db.db("HW14");
+        var collection = dbo.collection('Companies');
 
-    myFile.on('line', function (line) {
-   
-        var newString = line;
-        documentItems = newString.split(',');
-        var newData = {"Company": documentItems[0], "Ticker": documentItems[1], "Price": documentItems[2]};
-        if (documentItems[0]!= "Company") {
-            collection.insertOne(newData, function(err, res) {
-                if (err) { return console.log(err); }
-                console.log("new document inserted");
-            });
+        //runQuery(collection, data);
+
+            PSEUDOCODE
+        if queryChoice.value = 'symbol' {
+            db.--.find(symbol = queryChoice.value)    should display all results
         }
+        if queryChoice.value = 'coName' {
+            db.--.find(company = queryChoice.value)   should display all results
+        }
+        
     });
 
-}*/
+}
 
-/*http.createServer(function(req, res){
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    var qobj = url.parse(req.url, true).query;
-    if ( req.url == "/part2.js") {
-        console.log ("Successful");
-    } else {
-        console.log ("Not Successful");
-    }
-    var txt = qobj.x;
-    res.end(txt);
-});*/
-
-
-/*http.createServer(function(req, res){
-    var path = url.parse(req.url,true).pathname;
-    if ( path == "/part2.js") {
-        console.log ("Successful");
-    } else {
-        console.log ("Not Successful");
-    }
-    res.end();
-});*/
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -81,7 +59,9 @@ http.createServer(function (req, res) {
           }
           //var radioChoice = body.split('=');
           var id = queryArray['textInput']
-          console.log(id);
+          console.log(queryArray);
+
+          //find(queryArray);
           });
     }
 }).listen(8080);
