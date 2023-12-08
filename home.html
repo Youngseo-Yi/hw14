@@ -1,0 +1,37 @@
+<!--
+Youngseo Yi
+12/6/23
+CS20-Web Programming
+HW14: Node.js
+Content: Search for a Company/tag
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search for A Company</title>
+        <link rel="stylesheet" href="formStylesheet.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+        <!--header-->
+        <div class="header">
+            <div class="tagline">Find A Company</div>
+        </div>
+
+        <!--form-->
+        <p>Please fill out the form below to search for a company: </p>
+        <div class="form">
+            <form action="http://localhost:8080/process" method="post">
+                <input type="radio" id="symbol" name="queryChoice" value="symbol" required>
+                <label for="symbol">Stock Ticker Symbol</label><br>
+                <input type="radio" id="coName" name="queryChoice" value="coName">
+                <label for="coName">Company Name</label><br>
+                <label>Stock Ticker Symbol or Company Name: </label><input type="text" name="textInput" required>
+                <br>
+                <input type='submit'>
+            </form>
+        </div>
+        
+    </body>
+</html>
